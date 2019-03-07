@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>   
+    <title>Crystal Game</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+    <!-- <link href="css/style.css" rel="stylesheet" type="text/css"> -->
+
+    <style type="text/css">
+      .row {
+        margin-top: 30px;
+      }
+    </style>
+  </head>
+
+
+  <body>
+    <div class="container">
+
+      <!-- Game Title -->
+      <div class="row">
+        <div class="col-12 text-center">
+          <h1>CrystalsCollector!</h1>
+        </div>
+      </div>
+      <!-- END Game Title -->
+
+      <!-- Game Instructions -->
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              Instructions
+            </div>
+            <div class="card-body">
+              <p class="card-text">You will be given a random number at the start of the game. There are four crystals below. By clicking on a crystal you will add a specific amount of points to your total score. You win the game by matching your total score to the random number, you lose the game if your total score goes above the random number. The value of each crystal is hidden from you until you click on it. Each time when the game starts, the game will change the values of each crystal.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END Game Instructions -->
+
+      <div class="row">
+
+        <!-- Target Score -->
+        <div class="col-3">
+          <div class="card">
+            <div class="card-header">
+              Target Score
+            </div>
+            <div class="card-body text-center">
+              <h4 id="target-score">0</h4>
+            </div>
+          </div>
+        </div>
+
+        <!-- Your Score -->
+        <div class="col-3">
+          <div class="card">
+            <div class="card-header">
+              Your Score
+            </div>
+            <div class="card-body text-center">
+              <h4 id="total-score">0</h4>
+            </div>
+          </div>
+        </div>
+
+        <!-- Images of Crystals -->
+        <div class="col-6">
+          <div class="card">
+            <div class="card-header">
+              Crystal Selection
+            </div>
+            <div class="card-body text-center">
+              <img id="crystal-1" class="img-fluid crystal" src="https://image.flaticon.com/icons/svg/1583/1583581.svg" width=75 />
+              <img id="crystal-2" class="img-fluid crystal" src="https://image.flaticon.com/icons/svg/1543/1543286.svg" width=75 />
+              <img id="crystal-3" class="img-fluid crystal" src="https://image.flaticon.com/icons/svg/363/363437.svg" width=75 />
+              <img id="crystal-4" class="img-fluid crystal" src="https://image.flaticon.com/icons/svg/1399/1399594.svg" width=75 />
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Box to show wins/losses -->
+      <div class="row">
+        
+        <!-- Wins -->
+        <div class="col-6">
+          <div class="card">
+            <div class="card-header">
+              Win Count
+            </div>
+            <div class="card-body text-center">
+              <h4 id="wins">0</h4>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Losses -->
+        <div class="col-6">
+          <div class="card">
+            <div class="card-header">
+              Loss Count
+            </div>
+            <div class="card-body text-center">
+              <h4 id="losses">0</h4>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Javascript Logic for game -->
+    <script type="text/javascript">
+      $(document).ready(function() {
+
+        // Generate random number for target score
+        var targetScore = Math.floor(Math.random() * 100);
+        $("#target-score").text(targetScore);
+
+        // generate initial crystal point values
+        var crystal1 = Math.floor(Math.random() * 10 + 1);
+        var crystal2 = Math.floor(Math.random() * 10 + 1);
+        var crystal3 = Math.floor(Math.random() * 10 + 1);
+        var crystal4 = Math.floor(Math.random() * 10 + 1);
+
+        // create player score variable
+        var totalScore = 0;
+        $('#total-score').text(totalScore);
+
+        // Win & Loss count
+        var wins = 0;
+        var losses = 0;
+
+        // Crystal Click Event
+        $('.crystal').click(function() {
+          
+          // check which crystal you clicked
+          // and add corresponding crystal value to total
+          if (this.id === 'crystal-1') {
+            totalScore += crystal1;
+          } else if (this.id === 'crystal-2') {
+            totalScore += crystal2;
+          } else if (this.id === 'crystal-3') {
+            totalScore += crystal3;
+          } else if (this.id === 'crystal-4') {
+            totalScore += crystal4;
+          }
+
+          // update total score number in html
+          $('#total-score').text(totalScore);
+
+          // Win Condition
+          if (totalScore === targetScore) {
+            // increase wins by 1
+            wins++;
+
+            // update total win count in html
+            $('#wins').text(wins);
+
+            // Reset game
+            // generate new target score
+            targetScore = Math.floor(Math.random() * 100);
+            // update new target score in html
+            $('#target-score').text(targetScore);
+            // reset player score to 0
+            totalScore = 0;
+            // update player score in html
+            $('#total-score').text(totalScore);
+
+            // generate new crystal point values
+            crystal1 = Math.floor(Math.random() * 10 + 1);
+            crystal2 = Math.floor(Math.random() * 10 + 1);
+            crystal3 = Math.floor(Math.random() * 10 + 1);
+            crystal4 = Math.floor(Math.random() * 10 + 1);
+          } else if (totalScore > targetScore) {
+            // Lose condition
+            // increase losses by 1
+            losses++;
+            // update total loss count in html
+            $('#losses').text(losses);
+
+            // Reset game
+            // generate new target score
+            targetScore = Math.floor(Math.random() * 100);
+            // update new target score in html
+            $('#target-score').text(targetScore);
+            // reset player score to 0
+            totalScore = 0;
+            // update player score in html
+            $('#total-score').text(totalScore);
+
+            // generate new crystal point values
+            crystal1 = Math.floor(Math.random() * 10 + 1);
+            crystal2 = Math.floor(Math.random() * 10 + 1);
+            crystal3 = Math.floor(Math.random() * 10 + 1);
+            crystal4 = Math.floor(Math.random() * 10 + 1);
+          }
+        });
+      });
+    </script>
+
+  </body>
+
+</html>
