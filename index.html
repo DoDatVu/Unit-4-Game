@@ -123,6 +123,9 @@
       </div>
     </div>
 
+<!-- you should get in the habit of creating a separate javascript file where you put your logic.      -->
+<!-- you can then import that logic into your html file     -->
+<!-- this will keep your file from getting too bloated, especially once you start building out larger javascript files and need to keep things in line     -->
     <!-- Javascript Logic for game -->
     <script type="text/javascript">
       $(document).ready(function() {
@@ -144,6 +147,23 @@
         // Win & Loss count
         var wins = 0;
         var losses = 0;
+        
+        function resetGame() {
+          // generate new target score
+          targetScore = Math.floor(Math.random() * 100);
+          // update new target score in html
+          $('#target-score').text(targetScore);
+          // reset player score to 0
+          totalScore = 0;
+          // update player score in html
+          $('#total-score').text(totalScore);
+
+          // generate new crystal point values
+          crystal1 = Math.floor(Math.random() * 10 + 1);
+          crystal2 = Math.floor(Math.random() * 10 + 1);
+          crystal3 = Math.floor(Math.random() * 10 + 1);
+          crystal4 = Math.floor(Math.random() * 10 + 1);
+        }
 
         // Crystal Click Event
         $('.crystal').click(function() {
@@ -159,6 +179,23 @@
           } else if (this.id === 'crystal-4') {
             totalScore += crystal4;
           }
+          
+          /**alternative way to doing the above if/else if block:
+          the general idea is that instead of having a big if block, you instead have a set of key/value pairs instead
+          say you had 20 crystals instead of just 4 - the if block would be gigantic and much more annoying to write compared to this way
+          the way you had it above is fine, it works and makes sense especially in the context of 4 crystals
+          this is just to give you an idea of what another way of handling it could look like
+          
+          var crystalClicked = this.id;
+          var crystalObject = {
+            'crystal-1': crystal1,
+            'crystal-2': crystal2,
+            'crystal-3': crystal3,
+            'crystal-4': crystal4
+          };
+
+          totalScore += crystalObject[crystalClicked];
+          **/
 
           // update total score number in html
           $('#total-score').text(totalScore);
@@ -169,46 +206,21 @@
             wins++;
 
             // update total win count in html
-            $('#wins').text(wins);
-
-            // Reset game
-            // generate new target score
-            targetScore = Math.floor(Math.random() * 100);
-            // update new target score in html
-            $('#target-score').text(targetScore);
-            // reset player score to 0
-            totalScore = 0;
-            // update player score in html
-            $('#total-score').text(totalScore);
-
-            // generate new crystal point values
-            crystal1 = Math.floor(Math.random() * 10 + 1);
-            crystal2 = Math.floor(Math.random() * 10 + 1);
-            crystal3 = Math.floor(Math.random() * 10 + 1);
-            crystal4 = Math.floor(Math.random() * 10 + 1);
+            $('#wins').text(wins);            
           } else if (totalScore > targetScore) {
             // Lose condition
             // increase losses by 1
             losses++;
             // update total loss count in html
             $('#losses').text(losses);
-
-            // Reset game
-            // generate new target score
-            targetScore = Math.floor(Math.random() * 100);
-            // update new target score in html
-            $('#target-score').text(targetScore);
-            // reset player score to 0
-            totalScore = 0;
-            // update player score in html
-            $('#total-score').text(totalScore);
-
-            // generate new crystal point values
-            crystal1 = Math.floor(Math.random() * 10 + 1);
-            crystal2 = Math.floor(Math.random() * 10 + 1);
-            crystal3 = Math.floor(Math.random() * 10 + 1);
-            crystal4 = Math.floor(Math.random() * 10 + 1);
           }
+          
+          // after you do the logic associated with winning or losing, then reset the game
+          // since resetting the game works the same regardless of if you win or lose, make a function for it
+          // instead of having to duplicate the logic, you now have a single source of truth.
+          // this makes making any edits to your reset logic easier since there is one place to do it instead of two
+          // it also makes reading what happens in the crystal click handler easier since the function name is pretty clear
+          resetGame();
         });
       });
     </script>
